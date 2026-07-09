@@ -75,9 +75,7 @@ echo -e '\nif [ -n "$WYRMSHELL" ]; then\n    cat ~/.config/wyrmshell/dragon-ansi
 ```
 (swap `.bashrc` for `.zshrc` if you're on zsh)
 
-**Note:** if you followed the earlier version of this README, you may
-already have a line that runs plain `fastfetch` in `.bashrc` -- remove or
-comment that out, since sysinfo now lives in its own panel instead.
+
 
 
 
