@@ -1,4 +1,5 @@
 # wyrmshell
+<img width="1916" height="1014" alt="image" src="https://github.com/user-attachments/assets/4cbf7000-0a32-4a1b-b023-a2acb0c14804" />
 
 
 ## 1. Build dependencies
