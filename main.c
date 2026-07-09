@@ -1,26 +1,4 @@
-/*
- * wyrmshell — a custom terminal emulator built on GTK3 + VTE.
- *
- * Layout:
- *   - LEFT:  interactive main shell. Its rc-file hook prints just the
- *     dragon (cat ~/.config/wyrmshell/dragon-ansi.txt), no sysinfo text.
- *   - RIGHT, top: a small fixed-height panel running `fastfetch --logo
- *     none` once at launch -- kernel/uptime/cpu/etc + colors, no logo
- *     (the logo lives in the left pane instead).
- *   - RIGHT, bottom: a live python3 REPL panel, starting right where the
- *     sysinfo panel ends (real widget stacking, not a guessed offset).
- *
- * Other features:
- *   - Ember/obsidian dragon theme
- *   - Ctrl+Shift+C/V copy-paste, Ctrl+Shift+Q quit, Ctrl +/-/0 font zoom
- *   - Ctrl+Shift+P toggles the whole right column
- *   - "Save as script" in the python panel asks for confirmation, then
- *     extracts the session's code, writes wyrm_scratch.py to the main
- *     shell's live cwd, and executes it inside the same REPL via exec()
- *   - Window title follows shell's OSC title escapes
- *
- * Build: see Makefile (needs gtk3-devel, vte-devel on openSUSE Tumbleweed)
- */
+
 
 #include <gtk/gtk.h>
 #include <vte/vte.h>
@@ -45,7 +23,7 @@ static GtkWidget *panel_box;
 static VteTerminal *repl_vte;
 static gboolean panel_visible = TRUE;
 
-/* ---------- generic spawn callback ---------- */
+
 
 static void
 generic_spawn_callback(VteTerminal *terminal, GPid pid, GError *error, gpointer user_data)
@@ -65,7 +43,7 @@ main_spawn_callback(VteTerminal *terminal, GPid pid, GError *error, gpointer use
     main_shell_pid = pid;
 }
 
-/* ---------- shell / repl / sysinfo spawn ---------- */
+
 
 static void
 spawn_shell_into(VteTerminal *vte)
@@ -83,7 +61,7 @@ spawn_shell_into(VteTerminal *vte)
     g_free(cwd);
 }
 
-static char *get_shell_cwd(void); /* fwd decl */
+static char *get_shell_cwd(void); 
 
 static void
 spawn_python_repl(void)
@@ -122,7 +100,7 @@ on_child_exited(VteTerminal *terminal, gint status, gpointer user_data)
 static void
 on_repl_exited(VteTerminal *terminal, gint status, gpointer user_data)
 {
-    spawn_python_repl(); /* respawn so the panel stays usable */
+    spawn_python_repl(); 
 }
 
 static void
@@ -133,7 +111,7 @@ on_title_changed(VteTerminal *terminal, gpointer user_data)
     gtk_window_set_title(window, title && *title ? title : APP_NAME);
 }
 
-/* ---------- live cwd tracking ---------- */
+
 
 static char *
 get_shell_cwd(void)
@@ -150,7 +128,7 @@ get_shell_cwd(void)
     return g_strdup(buf);
 }
 
-/* ---------- extract code from REPL session & save-as-script ---------- */
+
 
 static char *
 extract_repl_code(VteTerminal *vte)
@@ -227,7 +205,7 @@ on_save_clicked(GtkButton *button, gpointer user_data)
     g_free(code); g_free(dir); g_free(filepath);
 }
 
-/* ---------- panel toggle ---------- */
+
 
 static void
 toggle_panel(GtkWidget *window)
@@ -242,7 +220,7 @@ toggle_panel(GtkWidget *window)
     }
 }
 
-/* ---------- keybinds (main terminal) ---------- */
+
 
 static void
 apply_font_scale(VteTerminal *terminal)
@@ -286,7 +264,7 @@ on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     return FALSE;
 }
 
-/* ---------- ember/obsidian theme ---------- */
+
 
 static void
 set_colors(VteTerminal *terminal)
@@ -333,21 +311,21 @@ make_terminal(const char *font_str)
     return vte;
 }
 
-/* ---------- build right-side column: sysinfo (fixed) + python panel ---------- */
+
 
 static GtkWidget *
 build_panel(GtkWidget *window)
 {
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-    /* fixed-height sysinfo widget: fastfetch --logo none, runs once */
+
     GtkWidget *sysinfo_w = GTK_WIDGET(make_terminal(SYSINFO_FONT));
     VteTerminal *sysinfo_vte = VTE_TERMINAL(sysinfo_w);
     gtk_widget_set_size_request(sysinfo_w, -1, SYSINFO_HEIGHT_PX);
     gtk_box_pack_start(GTK_BOX(box), sysinfo_w, FALSE, FALSE, 0);
     spawn_sysinfo_once(sysinfo_vte);
 
-    /* header: label + save button */
+
     GtkWidget *header = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
     GtkWidget *label = gtk_label_new(NULL);
     gtk_label_set_markup(GTK_LABEL(label),
@@ -363,7 +341,7 @@ build_panel(GtkWidget *window)
     style_widget(header, "box { background-color: #1b1f27; padding: 4px; }");
     gtk_box_pack_start(GTK_BOX(box), header, FALSE, FALSE, 0);
 
-    /* the live REPL, fills whatever's left below sysinfo+header */
+
     GtkWidget *repl_w = GTK_WIDGET(make_terminal(REPL_FONT));
     repl_vte = VTE_TERMINAL(repl_w);
     g_signal_connect(repl_vte, "child-exited", G_CALLBACK(on_repl_exited), NULL);
@@ -386,13 +364,13 @@ main(int argc, char *argv[])
     g_envp = g_environ_setenv(g_envp, "WYRMSHELL", "1", TRUE);
     g_envp = g_environ_setenv(g_envp, "TERM_PROGRAM", "wyrmshell", TRUE);
 
-    /* main terminal (left) -- rc hook prints just the dragon */
+ 
     VteTerminal *main_vte = make_terminal(DEFAULT_FONT);
     g_object_set_data(G_OBJECT(window), "main-vte", main_vte);
     g_signal_connect(main_vte, "child-exited", G_CALLBACK(on_child_exited), window);
     g_signal_connect(main_vte, "window-title-changed", G_CALLBACK(on_title_changed), window);
 
-    /* right column: sysinfo (fixed) + python panel */
+ 
     panel_box = build_panel(window);
 
     paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
