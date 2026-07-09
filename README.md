@@ -1,18 +1,5 @@
 # wyrmshell
 
-Custom GTK3 + VTE terminal emulator with an ember/obsidian dragon theme.
-
-## Layout
-
-- **Left**: your interactive main shell. Its rc-file hook prints just the
-  dragon on startup (a plain `cat` of a pre-colored ANSI file) -- no
-  sysinfo text here anymore.
-- **Right column, top**: a small fixed-height panel that runs
-  `fastfetch --logo none` once at launch -- kernel/uptime/cpu/gpu/disk/
-  memory + color swatches, no logo (the logo lives in the left pane).
-- **Right column, bottom**: a live `python3` REPL, starting right where
-  the sysinfo panel ends -- real widget stacking, not a guessed offset,
-  so it lines up correctly regardless of window size.
 
 ## 1. Build dependencies
 
