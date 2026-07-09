@@ -78,19 +78,7 @@ echo -e '\nif [ -n "$WYRMSHELL" ]; then\n    cat ~/.config/wyrmshell/dragon-ansi
 already have a line that runs plain `fastfetch` in `.bashrc` -- remove or
 comment that out, since sysinfo now lives in its own panel instead.
 
-## Customizing
 
-- **Dragon (main pane)**: edit `~/.config/wyrmshell/dragon-ansi.txt`
-  directly -- it's your ASCII art with a raw ANSI color code at the very
-  start and a reset at the end. Edit the art freely; leave those two
-  escape bits alone (or change the color code, `\x1b[38;5;208m` is 256-color
-  amber -- swap `208` for any 0-255 value).
-- **Sysinfo panel fields/colors**: edit `~/.config/fastfetch/config.jsonc`.
-  Run `fastfetch --list-modules` to see everything available.
-- **Sysinfo panel height**: `SYSINFO_HEIGHT_PX` in `main.c` (currently 300).
-  If the fastfetch output is taller or shorter than that on your system,
-  bump this number up/down and rebuild.
-- **Terminal theme (background/text colors)**: `set_colors()` in `main.c`.
 
 ## Keybinds
 
@@ -111,8 +99,4 @@ comment that out, since sysinfo now lives in its own panel instead.
   and runs it inside the same REPL session via `exec()` -- output appears
   right there, and `if __name__ == "__main__":` blocks still work.
 
-## What's next (not built yet)
 
-- Tabs / multiple split panes
-- Claude Code / Codex quick-launch pane
-- Quake-style drop-down, session save/restore, fuzzy history search
