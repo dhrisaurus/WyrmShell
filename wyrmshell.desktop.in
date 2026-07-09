@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=wyrmshell
+Comment=Dragon-themed terminal emulator
+Exec=@BINPATH@
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=System;TerminalEmulator;
+Keywords=terminal;console;shell;prompt;dragon;
+StartupNotify=true
